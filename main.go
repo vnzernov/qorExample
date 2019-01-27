@@ -39,6 +39,7 @@ type Product struct {
 }
 type ProductType struct {
 	gorm.Model
+	ID   int
 	Name string
 }
 type ProductColor struct {
@@ -49,7 +50,7 @@ type ProductColor struct {
 func main() {
 	DB, _ := gorm.Open("sqlite3", "demo.db")
 	DB.AutoMigrate(&Product{}, &ProductType{}, &ProductColor{})
-
+	DB.LogMode(true)
 	// Initalize
 	Admin := admin.New(&admin.AdminConfig{DB: DB, SiteName: "Qor Example"})
 
@@ -80,9 +81,11 @@ func main() {
 		},
 		Valuer: func(record interface{}, context *qor.Context) (result interface{}) {
 			if rec, ok := record.(*Product); ok {
+				var productTypeL ProductType
+				context.DB.Where(&ProductType{ID: rec.Type}).First(&productTypeL)
+				fmt.Println(productTypeL)
 				//mapPaymentStatus := asr.BookListMap("paymentStatus")
-				return rec.Type //asr.BookListMap("paymentStatus")[rec.StatusID] //mapPaymentStatus[rec.TypeID]
-
+				return productTypeL.Name //asr.BookListMap("paymentStatus")[rec.StatusID] //mapPaymentStatus[rec.TypeID]
 			}
 			return ""
 		}})
