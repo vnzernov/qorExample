@@ -30,6 +30,9 @@ func main() {
 	// Initalize
 	Admin := admin.New(&admin.AdminConfig{DB: DB})
 
+	// Add path for template
+	Admin.AssetFS.RegisterPath("views/")
+
 	// Create resources from GORM-backend model
 	Admin.AddResource(&User{})
 	Admin.AddResource(&Product{})
@@ -40,6 +43,6 @@ func main() {
 	// Mount admin to the mux
 	Admin.MountTo("/admin", mux)
 
-	fmt.Println("Listening on: 9000")
-	http.ListenAndServe(":9000", mux)
+	fmt.Println("Listening on: 7000")
+	http.ListenAndServe(":7000", mux)
 }

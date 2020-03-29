@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    {{$title := page_title}}
+    <title>{{if $title}}{{$title}} - {{end}}{{if .Admin.SiteName}}{{t .Admin.SiteName}}{{else}}{{t "Qor Admin"}}{{end}}</title>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Stylesheets -->
+    {{stylesheet_tag "qor_admin_default"}}
+    {{load_admin_stylesheets}}
+    {{load_theme_stylesheets}}
+    {{javascript_tag "vendors"}}
+  </head>
+
+  <body class="{{if qor_theme_class}}{{qor_theme_class}}{{end}}">
+    <a class="visuallyhidden" href="#content" tabindex="1">{{t "qor_admin.layout.skip_to_content" "Skip to content"}}</a>
+
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header qor-layout">
+      <header class="mdl-layout__header">
+        <div class="mdl-layout__header-row">
+          {{$actions := load_actions "header" }}
+          {{if $actions}}
+            {{$actions}}
+          {{end}}
+        </div>
+      </header>
+
+      <div class="mdl-layout__drawer">
+        {{render "shared/sidebar"}}
+      </div>
+
+      <main class="mdl-layout__content qor-page" id="content">
+    <div class="qor-table-container" style="margin-left: 30px;">
+	<h5> Автоматизированная система расчетов Ямал </h5>
+	<p> Версия - <b>{{t .Resource.Value.Version}}</b></p>
+	<p> Сборка - <b>{{t .Resource.Value.Build}}</b></p>
+	<p> Всего пользователей - <b>{{t .Resource.Value.CustomerCount}}</b></p>
+	<p> Активировано сервисов - <b>{{t .Resource.Value.ServiceActiveCount}}</b></p>
+	<p> Активных тарифов - <b>{{t .Resource.Value.TaCount}}</b></p>
+	<p> Активированных тарифов - <b>{{t .Resource.Value.TaActivateCount}}</b></p>
+	<p> Время обработки - <b>{{t .Resource.Value.WorkTime}}</b></p>
+	<p> Разработка - <b>АО Газпром Космические системы </b></p>
+    </div>
+<!--        {{.Content}} -->
+
+      </main>
+    </div>
+
+    <!-- JavaScripts -->
+    {{javascript_tag "qor_admin_default"}}
+    {{load_admin_javascripts}}
+    {{load_theme_javascripts}}
+  </body>
+</html>

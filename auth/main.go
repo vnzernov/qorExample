@@ -14,6 +14,7 @@ import (
 	"github.com/qor/qor"
 	"github.com/qor/roles"
 	"github.com/qor/session/manager"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Define another GORM-backend model
@@ -67,7 +68,8 @@ func init() {
 }
 
 func main() {
-
+	bcryptPassword, _ := bcrypt.GenerateFromPassword([]byte("admin"), bcrypt.DefaultCost)
+	fmt.Printf("%s\n", string(bcryptPassword))
 	gormDB.LogMode(true)
 	gormDB.AutoMigrate(&User{}, &Product{}, &auth_identity.AuthIdentity{})
 	Admin := admin.New(&admin.AdminConfig{DB: gormDB, Auth: &AdminAuth{}})
@@ -84,8 +86,8 @@ func main() {
 	// Mount Auth to Router
 	mux.Handle("/auth/", Auth.NewServeMux())
 
-	fmt.Println("Listening on: 9000")
-	http.ListenAndServe(":9000", manager.SessionManager.Middleware(mux))
+	fmt.Println("Listening on: 7000")
+	http.ListenAndServe(":7000", manager.SessionManager.Middleware(mux))
 }
 
 type User struct {
